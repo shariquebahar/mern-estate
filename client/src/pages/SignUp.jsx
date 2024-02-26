@@ -13,6 +13,8 @@ export default function SignUp() {
       [e.target.id]: e.target.value,
     });
   };
+  console.log(formData);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -25,15 +27,18 @@ export default function SignUp() {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
+
       console.log(data);
+
       if (data.success === false) {
         setLoading(false);
         setError(data.message);
         return;
+      } else {
+        setLoading(false);
+        setError(null);
+        navigate("/sign-in");
       }
-      setLoading(false);
-      setError(null);
-      navigate("/sign-in");
     } catch (error) {
       setLoading(false);
       setError(error.message);
@@ -67,10 +72,9 @@ export default function SignUp() {
 
         <button
           disabled={loading}
-          className="bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-90 disabled:opacity-80"
+          className="bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-90 disabled:opacity-80 "
         >
-          {/* {loading ? 'Loading...' : 'Sign Up'} */}
-          Sign Up
+          {loading ? "Loading..." : "Sign Up"}
         </button>
         {/* <OAuth/> */}
       </form>
