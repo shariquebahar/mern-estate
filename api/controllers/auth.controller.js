@@ -1,8 +1,6 @@
 import User from "../models/user.model.js";
 import bcryptjs from "bcryptjs";
 import { errorHandler } from "../utils/error.js";
-import Jwt from "jsonwebtoken";
-
 import jwt from "jsonwebtoken";
 
 export const signUp = async (req, res, next) => {
@@ -66,6 +64,7 @@ export const google = async (req, res) => {
         password: hashedPassword,
         avatar: req.body.photo,
       });
+      // below function is used to save the new user registered to the database
       await newUser.save();
       const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
       const { password: pass, ...rest } = newUser._doc;
