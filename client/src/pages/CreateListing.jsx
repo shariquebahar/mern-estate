@@ -10,9 +10,13 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 export default function CreateListing() {
+  //initialising
   const { currentUser } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const [files, setFiles] = useState([]);
+
+  console.log(files);
+
   const [formData, setFormData] = useState({
     imageUrls: [],
     name: "",
@@ -32,12 +36,14 @@ export default function CreateListing() {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   console.log(formData);
+
   const handleImageSubmit = (e) => {
     if (files.length > 0 && files.length + formData.imageUrls.length < 7) {
       setUploading(true);
       setImageUploadError(false);
+      // creating promise arrray to store the multiple files
       const promises = [];
-
+      // iterating through all the files one by one and then pushing them into the promise array
       for (let i = 0; i < files.length; i++) {
         promises.push(storeImage(files[i]));
       }
@@ -59,11 +65,12 @@ export default function CreateListing() {
       setUploading(false);
     }
   };
+  // the storeImage function from the handleImageSubmit function is shown below
 
   const storeImage = async (file) => {
     return new Promise((resolve, reject) => {
       const storage = getStorage(app);
-      const fileName = new Date().getTime() + file.name;
+      const fileName = new Date().getTime() + file.name; // making a unique filename using date apppend method
       const storageRef = ref(storage, fileName);
       const uploadTask = uploadBytesResumable(storageRef, file);
       uploadTask.on(
@@ -118,12 +125,15 @@ export default function CreateListing() {
     ) {
       setFormData({
         ...formData,
+
+        //square bracket is necessary so that it fetches the corrosponding value
         [e.target.id]: e.target.value,
       });
     }
   };
 
   const handleSubmit = async (e) => {
+    //e.prevent default is used to prevent the form to be automatically submitted
     e.preventDefault();
     try {
       if (formData.imageUrls.length < 1)
@@ -273,7 +283,7 @@ export default function CreateListing() {
               <input
                 type="number"
                 id="regularPrice"
-                min="50"
+                min="0"
                 max="10000000"
                 required
                 className="p-3 border border-gray-300 rounded-lg"
@@ -342,7 +352,7 @@ export default function CreateListing() {
             formData.imageUrls.map((url, index) => (
               <div
                 key={url}
-                className="flex justify-between p-3 border items-center"
+                className="flex justify-between p-3 border  items-center"
               >
                 <img
                   src={url}
