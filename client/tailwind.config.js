@@ -4,5 +4,10 @@ export default {
   theme: {
     extend: {},
   },
-  plugins: [],
+  // plugins: [],
+
+  plugins: [
+    require("@tailwindcss/line-clamp"),
+    // ...
+  ],
 };
